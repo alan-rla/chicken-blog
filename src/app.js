@@ -17,6 +17,12 @@ const { PORT } = process.env;
 
 const app = express();
 
+app.use(
+  morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', {
+    stream: logger.stream,
+  }),
+);
+
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
