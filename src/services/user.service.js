@@ -51,16 +51,22 @@ class UsersService {
   };
 
   randomUsers = async ({ userId }) => {
+    if (userId === undefined) userId = null;
+
     const users = await this.usersRepository.findRandomUsers({ userId });
 
     // 유저 레벨 변환
-    const randomUsers = users.map((user) => {
-      return (user.userLevel = Math.min(
-        Math.max(parseInt(user.userLevel / 1), 1),
+    users.map((user) => {
+      if (user.dataValues.userLevel === null) {
+        user.dataValues.userLevel = 1;
+      }
+
+      return (user.dataValues.userLevel = Math.min(
+        Math.max(parseInt(user.dataValues.userLevel / 1), 1),
         5,
       ));
     });
-    return randomUsers;
+    return users;
   };
 }
 

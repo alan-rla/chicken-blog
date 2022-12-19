@@ -1,10 +1,10 @@
-const { Sequelize } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 class UsersRepository {
   constructor(UsersModel, TodosModel) {
     (this.usersModel = UsersModel), (this.todosModel = TodosModel);
   }
 
-  createUser = async (account, nickname, hashedPW) => {
+  createUser = async ({ account, nickname, hashedPW }) => {
     await this.usersModel.create({ account, nickname, password: hashedPW });
   };
 
@@ -30,20 +30,36 @@ class UsersRepository {
         {
           model: this.todosModel,
           as: 'Todos',
-          where: { done: { [Op.eq]: true } },
+          where: { done: { [Op.eq]: 1 } },
           attributes: [],
         },
       ],
     });
+
     return userInfo;
   };
 
   findRandomUsers = async ({ userId }) => {
     const randomUsers = await this.usersModel.findAll({
-      where: { [Op.not]: { userId } },
       order: Sequelize.literal('rand()'),
+      subQuery: false,
       limit: 4,
+      where: { userId: { [Op.not]: userId } },
+      attributes: [
+        'userId',
+        'nickname',
+        [Sequelize.fn('SUM', Sequelize.col('Todos.done')), 'userLevel'],
+      ],
+      include: [
+        {
+          model: this.todosModel,
+          as: 'Todos',
+          attributes: [],
+        },
+      ],
+      group: ['userId'],
     });
+
     return randomUsers;
   };
 }
