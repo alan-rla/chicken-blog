@@ -4,10 +4,9 @@ class TodoRepository {
 		this.todoModels = TodoModels
 	}
 
-	getTodos = async (userId) => {
+	getTodos = async ({userId}) => {
 		return await this.todoModels.findAll({
 			where: { userId },
-			order: ["createdAt", "DESC"],
 			include: [
 				{
 					model: this.userModels,

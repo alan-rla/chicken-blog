@@ -6,12 +6,25 @@ class TodoController {
     todoService = new TodoService()
 
     getTodos = async (req, res, next) => {
+      
       try {
-				return res.status(200).json({ Todos : await this.todoService.getTodos()})
+        const { userId } = req.params
+				return res.status(200).json({ Todos : await this.todoService.getTodos({userId}) })
 
       } catch (err) {
+          console.error(err)
           next(err)
       }
+    }
+
+    getOneTodo = async (req, res, next) => {
+       try {
+        const { todoId } = req.params
+        return res.status(200).json({ Todos : await this.todoService.getOneTodo({todoId}) })
+        
+       } catch (err) {
+          next(err)
+       }
     }
 
     createTodos = async (req, res, next) => {

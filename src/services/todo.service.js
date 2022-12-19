@@ -15,8 +15,8 @@ class TodoService {
 
 	// }
 
-	getTodos = async (userId) => {
-		return await this.todoRepository.getTodos(userId)
+	getTodos = async ({userId}) => {
+		return await this.todoRepository.getTodos({userId})
 	}
 
 	getOneTodo = async ({todoId}) => {
@@ -41,7 +41,7 @@ class TodoService {
 	updateTodos = async ({todoId, content}) => {
 		
 			const todo = await this.todoRepository.updateTodos({todoId, content})
-			
+
 			if (!todo){
 				throw new ApiError('존재하지 않는 TODO입니다.', 401)
 			}
@@ -61,13 +61,13 @@ class TodoService {
 		else return await this.todoRepository.update( { done : true }, { where : done })
 	}
 
-	deleteTodos = async (todoId) => {
+	deleteTodos = async ({todoId}) => {
 
 			if (!todoId){
 				throw new ApiError('존재하지 않는 TODO입니다.', 401)
 			}
 
-			await this.todoRepository.deleteTodos(todoId)
+			await this.todoRepository.deleteTodos({todoId})
 
 	}
 }

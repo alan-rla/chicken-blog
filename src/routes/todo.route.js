@@ -6,6 +6,7 @@ const authMW = require('../middlewares/auth');
 const router = Router();
 
 router.get('/:userId', todosController.getTodos)
+router.get('/:userId/:todoId', authMW.isLoggedIn, todosController.getOneTodo)
 router.post('/:userId', authMW.isLoggedIn, todosController.createTodos)
 router.patch('/:userId/:todoId', authMW.isLoggedIn, todosController.updateTodos)
 router.delete('/:userId/:todoId', authMW.isLoggedIn, todosController.deleteTodos)
