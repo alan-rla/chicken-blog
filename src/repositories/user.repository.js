@@ -24,13 +24,12 @@ class UsersRepository {
       attributes: [
         'userId',
         'nickname',
-        [Sequelize.fn('COUNT', Sequelize.col('Todos.userId')), 'userLevel'],
+        [Sequelize.fn('SUM', Sequelize.col('Todos.done')), 'userLevel'],
       ],
       include: [
         {
           model: this.todosModel,
           as: 'Todos',
-          where: { done: { [Op.eq]: 1 } },
           attributes: [],
         },
       ],
