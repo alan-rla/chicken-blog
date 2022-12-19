@@ -7,8 +7,8 @@ const router = Router();
 
 
 router.post('/:userId', authMW.isLoggedIn, pstcontroller.creatPostController);
-router.patch('/');
-router.get('/:userId',  authMW.isLoggedIn, pstcontroller.getAllPostController);
-router.get('/:postId');
+router.patch('/:userId/:postId', authMW.isLoggedIn, pstcontroller.patchOnePostController);
+router.get('/:userId',   pstcontroller.getAllPostController);
+router.get('/:userId/:postId', pstcontroller.getONEPostController);
 
 module.exports = router;

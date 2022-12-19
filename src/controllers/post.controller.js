@@ -28,7 +28,7 @@ class PostController {
             const {userId} = req.params;
 
             const posts = await pstservice.getAllPostService({userId});
-            console.log( "컨트롤러단",posts)
+           
             res.status(200).json({posts: posts})
 
 
@@ -38,6 +38,32 @@ class PostController {
         }
     }
 
+    getONEPostController = async (req,res)=> {
+        try{
+
+            const userId = req.params.userId;
+            const postId = req.params.postId;
+            
+            const posts = await pstservice.getPostService({userId, postId});
+            res.status(200).json({post: posts});
+
+        }catch (err){
+
+
+        }
+
+
+    }
+
+    patchOnePostController = async (req, res)=>{
+
+        const userId = req.params.userId;
+        const postId = req.params.postId;
+        const {title, content} = req.body;
+        await pstservice.patchPostService({userId, postId, title, content});
+
+        res.status(200).json({messge:"게시글을 수정했습니다."});
+    }
     
 
 }

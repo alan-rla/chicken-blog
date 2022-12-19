@@ -14,7 +14,7 @@ class Postservice {
   
 
   getAllPostService = async ({userId}) => {
-    console.log(userId)
+   
     if(!userId){
       res.status(401).json({ messge: 'userId params가 없습니다.' });
     }
@@ -23,9 +23,27 @@ class Postservice {
     return posts;
   };
 
-  getPostService = async () => {};
+  getPostService = async ({userId, postId}) => {
+    
+    if(!userId || !postId){
+      res.status(500).json({messge: "params의 값이 정상적이지 않습니다."})
+    }
 
-  patchPostService = async () => {};
+    const posts = await pstrepository.getpost({userId, postId})
+    return posts;
+  };
+
+  patchPostService = async ({userId, postId}) => {
+
+    if(!userId || !postId || !title || !content){
+      res.status(500).json({errorMessge: "게시글 제목/내용을 입력하십시오."})
+    }
+
+    await pstrepository.patchpost({someId:userId, postId, title, content})
+
+
+
+  };
 
   delPostService = async () => {};
 }
