@@ -2,16 +2,6 @@ const PostsRepository = require('../repositories/post.repository');
 const pstrepository = new PostsRepository();
 class Postservice {
   creatPostService = async ({ userId, title, content }) => {
-    // const { authorization } = req.headers;
-    // const [authType, authToken] = (authorization || '').split(' ');
-
-    // if (!authToken || authType !== 'Bearer') {
-    //   res.status(401).json({
-    //     errorMessage: '로그인이 필요한 기능입니다.',
-    //   });
-    // }
-
-    //const { userId } = jwt.verify(authToken, "customized-secret-key");
 
     if (!userId || !title || !content) {
       res.status(401).json({ messge: '게시글/제목/내용을 입력하십시오' });
@@ -21,11 +11,21 @@ class Postservice {
     return true;
   };
 
-  patchPostService = async () => {};
+  
 
-  getAllPostService = async () => {};
+  getAllPostService = async ({userId}) => {
+    console.log(userId)
+    if(!userId){
+      res.status(401).json({ messge: 'userId params가 없습니다.' });
+    }
+    const posts = await pstrepository.getAllposts({userId})
+    
+    return posts;
+  };
 
   getPostService = async () => {};
+
+  patchPostService = async () => {};
 
   delPostService = async () => {};
 }
