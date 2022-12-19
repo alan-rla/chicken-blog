@@ -16,7 +16,7 @@ class UsersService {
       throw new ApiError('비밀번호 확인이 일치하지 않습니다.', 401);
 
     const existAcc = await this.usersRepository.findUserByAcc({ account });
-    if (existAcc) throw new ApiError('이미 존재하는 ID입니다.', 401);
+    if (existAcc) throw new ApiError('이미 존재하는 아이디입니다.', 401);
 
     const existNick = await this.usersRepository.findUserByNick({ nickname });
     if (existNick) throw new ApiError('이미 존재하는 닉네임입니다.', 401);
@@ -31,7 +31,7 @@ class UsersService {
     const pwCompare = await this.bcrypt.compare(password, user.password);
 
     if (!user || !pwCompare)
-      throw new ApiError('ID 또는 비밀번호가 틀렸습니다.', 401);
+      throw new ApiError('아이디 또는 비밀번호가 틀렸습니다.', 401);
 
     return this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
       expiresIn: 60 * 60,

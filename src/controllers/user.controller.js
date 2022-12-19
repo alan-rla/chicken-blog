@@ -1,6 +1,10 @@
 const UsersService = require('../services/user.service');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {
+  registerSchema,
+  loginSchema,
+} = require('../validations/user.validation');
 
 class UsersController {
   constructor() {
@@ -9,7 +13,8 @@ class UsersController {
 
   register = async (req, res, next) => {
     try {
-      const { account, nickname, password, confirm } = req.body;
+      const { account, nickname, password, confirm } =
+        await registerSchema.validateAsync(req.body);
       await this.usersService.register({
         account,
         nickname,
@@ -25,7 +30,7 @@ class UsersController {
 
   login = async (req, res, next) => {
     try {
-      const { account, password } = req.body;
+      const { account, password } = await loginSchema.validateAsync(req.body);
       const accessToken = await this.usersService.login({ account, password });
 
       res
