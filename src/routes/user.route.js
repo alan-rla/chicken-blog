@@ -1,7 +1,14 @@
 const { Router } = require('express');
-const UserController = require('../controllers/user.controller');
-const userController = new UserController();
+const UsersController = require('../controllers/user.controller');
+const usersController = new UsersController();
+const authMW = require('../middlewares/auth');
 
 const router = Router();
+
+router.post('/register', authMW.isNotLoggedIn, usersController.register);
+router.post('/login', authMW.isNotLoggedIn, usersController.login);
+router.get('/logout', authMW.isLoggedIn, usersController.logout);
+router.get('/:userId', usersController.findUser);
+router.get('/neighbor', usersController.randomUsers);
 
 module.exports = router;
