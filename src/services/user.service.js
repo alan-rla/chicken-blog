@@ -42,9 +42,12 @@ class UsersService {
     const userInfo = await this.usersRepository.findUserByUserId({ userId });
     if (!userInfo) throw new ApiError('존재하지 않는 계정입니다', 401);
 
+    if (userInfo.dataValues.userLevel === null) {
+      userInfo.dataValues.userLevel = 1;
+    }
     // 유저 레벨은 최소 1 최대 5
-    userInfo.userLevel = Math.min(
-      Math.max(parseInt(userInfo.userLevel / 1), 1),
+    userInfo.dataValues.userLevel = Math.min(
+      Math.max(parseInt(userInfo.dataValues.userLevel / 1), 1),
       5,
     );
     return userInfo;
