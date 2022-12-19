@@ -1,52 +1,91 @@
 const TodoService = require('../services/todo.service')
-const { Users, Todos } = require('../models')
-const { ApiError } = require('../utils/apiError')
 const { json } = require('sequelize')
+const { ApiError } = require('../utils/apiError')
 
 class TodoController {
-    todoService = new TodoService(Users, Todos)
+    todoService = new TodoService()
 
     getTodos = async (req, res, next) => {
-        try {
-					
-					return res.status(200).json({ Todos : await this.todoService.getTodos()})
+      try {
+				return res.status(200).json({ Todos : await this.todoService.getTodos()})
 
-        } catch (err) {
-            next(err)
-        }
+      } catch (err) {
+          next(err)
+      }
     }
 
     createTodos = async (req, res, next) => {
-        try {
+      try {
 
-          return res.status(200).json({ message : 'TODO를 작성했습니다.', code: 200})
+			  const { userId } = req.params
+			  const { content } = req.body
+        const userInfo = res.locals
 
-        } catch (err) {
-            next(err)
-        }
+			  if (userId != userInfo.userId){
+				  throw new ApiError('본인 소유의 둥지가 아닙니다.', 403)
+			  }
+
+				await this.todoService.createTodos({
+					userId,
+					content,
+				})
+
+        return res.status(200).json({ message : 'TODO를 작성했습니다.'})
+
+      } catch (err) {
+        	next(err)
+      }
     }
 
     updateTodos = async (req, res, next) => {
-        try {
-
-          return res.status(200).json({ message : 'TODO를 수정했습니다.', code: 200})
-
-        } catch (err) {
-            next(err)
+      try {
+        const userInfo = res.locals
+        const userId = req.params.userId
+        const todoId = req.params.todoId
+        const { content } = req.body
+  
+        if (userId != userInfo.userId){
+          throw new ApiError('본인 소유의 둥지가 아닙니다.', 403)
         }
+
+        if (!content) {
+          throw new ApiError('TODO내용을 입력해주세요.', 401)
+        }
+
+				await this.todoService.updateTodos({
+          todoId,
+					content,
+				})
+
+        return res.status(200).json({ message : 'TODO를 수정했습니다.'})
+
+      } catch (err) {
+          next(err)
+      }
     }
 
     deleteTodos = async (req, res, next) => {
-        try {
+      try {
+				
+				const userInfo = res.locals
+			  const userId = req.params.userId
+			  const todoId = req.params.todoId
 
-          return res.status(200).json({ message : 'TODO를 삭제했습니다.', code: 200})
+			if (userId != userInfo.userId){
+				throw new ApiError('본인 소유의 둥지가 아닙니다.', 403)
+			}
 
-        } catch (err) {
-            next(err)
-        }
+			await this.todoService.deleteTodos({
+				todoId,
+			})
+
+      return res.status(200).json({ message : 'TODO를 삭제했습니다.' })
+
+      } catch (err) {
+          next(err)
+      }
     }
-
-    
+		 
 }
 
 module.exports = TodoController
