@@ -1,14 +1,11 @@
 const { Router } = require('express');
-const postController = require('../controllers/post.controller.js');
-
-
+const PostController = require('../controllers/post.controller.js');
+const pstcontroller = new PostController();
 const router = Router();
 
-router.post('/', postController, )
-router.patch('/', postController)
-router.get('/', postController)
-router.get('/:postId', postController)
-
-
+router.post('/:userId', pstcontroller.creatPostController);
+router.patch('/');
+router.get('/');
+router.get('/:postId');
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const PostsRepository = require('../repositories/post.repository');
-
+const pstrepository = new PostsRepository();
 class Postservice {
-  creatPostService = async (userId, title, content) => {
+  creatPostService = async ({ userId, title, content }) => {
     // const { authorization } = req.headers;
     // const [authType, authToken] = (authorization || '').split(' ');
 
@@ -17,7 +17,8 @@ class Postservice {
       res.status(401).json({ messge: '게시글/제목/내용을 입력하십시오' });
     }
 
-    return await Postservice.creat(userId, title, content);
+    await pstrepository.creatpost({ userId, title, content });
+    return true;
   };
 
   patchPostService = async () => {};
