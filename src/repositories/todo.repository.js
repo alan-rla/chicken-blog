@@ -1,25 +1,36 @@
 class TodoRepository {
-    constructor(TodoModels) {
+    constructor(UserModels, TodoModels) {
+        this.userModels = UserModels
         this.todoModels = TodoModels
     }
 
-    getTodos = async () => {
-        return await this.todoModels.findAll()
+    getTodos = async (userId) => {
+        return await this.todoModels.findAll({
+            where: { userId },
+            order: ["createdAt", "DESC"],
+            include: [
+                {
+                    model: this.userModels,
+                    attributes: ['userId', 'nickname']
+                }
+            ]
+        })
     }
     
-    getOneTodos = async () => {
+    getOneTodos = async (todoId) => {
         return await this.todoModels.findOne({
             where : { todoId : todoId }
         })
     }
 
-    doneChecked = async () => {
+    doneChecked = async (todoId) => {
         return await this.todoModels.findOne({
-            where : { done : done } 
+            where : { todoId },
+            attributes : ['done']
         })
     }
 
-    createTodos = async () => {
+    createTodos = async (userId, todoId, content) => {
         return await this.todoModels.create({
             todoId,
             userId,
@@ -27,14 +38,14 @@ class TodoRepository {
         })
     }
 
-    updateTodos = async () => {
+    updateTodos = async (todoId, content) => {
         return await this.todoModels.update(
             { content },
             { where : { todoId }}
         )
     }
 
-    deleteTodos = async () => {
+    deleteTodos = async (todoId) => {
         return await this.todoModels.destroy({
             where : { todoId }
         })
