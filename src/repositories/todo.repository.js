@@ -61,11 +61,16 @@ class TodoRepository {
     return true;
   };
 
-  updateTodos = async ({ todoId, content, done }) => {
+  updateTodos = async ({ todoId, content }) => {
     const todo = await this.todoModels.update(
-      { content, done },
+      { content },
       { where: { todoId } },
     );
+    return todo;
+  };
+
+  updateDone = async ({ todoId, done }) => {
+    const todo = await this.todoModels.update({ done }, { where: { todoId } });
     return todo;
   };
 
