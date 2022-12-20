@@ -26,6 +26,11 @@ class Postservice {
     }
 
     const posts = await pstrepository.getpost({ userId, postId });
+    
+    const answer = {
+      
+
+    }
     return posts;
   };
 
