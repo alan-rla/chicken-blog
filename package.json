@@ -6,12 +6,7 @@
   "scripts": {
     "prettify": "prettier --write *.js **/*.js",
     "start": "pm2 start ./src/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/app.js",
-    "test": "cross-env NODE_ENV=test jest --forceExit",
-    "test:silent": "cross-env NODE_ENV=test jest --silent --forceExit",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage --forceExit",
-    "test:unit": "cross-env NODE_ENV=test jest test/units --forceExit",
-    "test:integration": "cross-env NODE_ENV=test jest test/integrations --forceExit"
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
