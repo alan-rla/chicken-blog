@@ -20,8 +20,8 @@ class PostsRepository {
 
   getpost = async ({ userId, postId }) => {
     console.log(3);
-    const post = await Posts.findAll({
-      where: { userId },
+    const post = await Posts.findOne({
+      where: { postId },
       order: [['createdAt', 'asc']],
       attributes: ['postId', 'title', 'updatedAt'],
 

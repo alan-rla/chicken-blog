@@ -26,11 +26,9 @@ class Postservice {
     }
 
     const posts = await pstrepository.getpost({ userId, postId });
-    
-    const answer = {
-      
 
-    }
+    //TODO: 추후 수정 필요 comment.nickname map함수 활용
+    //const answer = {};
     return posts;
   };
 

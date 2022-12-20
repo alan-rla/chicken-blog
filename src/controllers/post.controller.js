@@ -1,7 +1,7 @@
 const Postservice = require('../services/post.service');
 const pstservice = new Postservice();
 class PostController {
-  creatPostController = async (req, res) => {
+  creatPostController = async (req, res, next) => {
     try {
       const { title, content } = req.body;
       const { userId } = res.locals;
@@ -15,12 +15,11 @@ class PostController {
       pstservice.creatPostService({ userId, title, content });
       return res.status(200).json({ messge: '글쓰기 성공' });
     } catch (err) {
-      console.log(err);
-      res.status(500).json({ messge: '글쓰기 오류' });
+      next(err);
     }
   };
 
-  getAllPostController = async (req, res) => {
+  getAllPostController = async (req, res, next) => {
     try {
       const { userId } = req.params;
 
@@ -28,23 +27,23 @@ class PostController {
 
       res.status(200).json({ posts: posts });
     } catch (err) {
-      console.log(err);
-      res.status(500).json({ messge: '게시글 조회 오류' });
+      next(err);
     }
   };
 
-  getONEPostController = async (req, res) => {
+  getONEPostController = async (req, res, next) => {
     try {
       const userId = req.params.userId;
       const postId = req.params.postId;
 
       const posts = await pstservice.getPostService({ userId, postId });
       res.status(200).json({ post: posts });
-    } catch (err) {}
-    res.status(400).json({ messge: '게시글 상세 조회 오류' });
+    } catch (err) {
+      next(err);
+    }
   };
 
-  patchOnePostController = async (req, res) => {
+  patchOnePostController = async (req, res, next) => {
     try {
       const someId = req.params.userId;
       const postId = req.params.postId;
@@ -61,12 +60,11 @@ class PostController {
 
       res.status(200).json({ messge: '게시글을 수정했습니다.' });
     } catch (err) {
-      console.log(err);
-      res.status(400).json({ messge: '게시글 수정 오류' });
+      next(err);
     }
   };
 
-  delOnePostController = async (req, res) => {
+  delOnePostController = async (req, res, next) => {
     try {
       const someId = req.params.userId;
       const postId = req.params.postId;
@@ -76,8 +74,7 @@ class PostController {
 
       res.status(200).json({ messge: '게시글 삭제 성공' });
     } catch (err) {
-      console.log(err);
-      res.status(400).json({ messge: '게시글 삭제 오류' });
+      next(err);
     }
   };
 }
