@@ -29,7 +29,7 @@ app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(boolParser());
 
-app.use('/api', api);
+app.use('/', api);
 
 app.use(errorLogger);
 app.use(errorConverter);

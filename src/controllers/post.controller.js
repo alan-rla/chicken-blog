@@ -6,8 +6,6 @@ class PostController {
       const { title, content } = req.body;
       const { userId } = res.locals;
       const some = req.params;
-      console.log('some', some.userId);
-      console.log('user', userId);
 
       if (some.userId != userId) {
         res.status(500).json({ msg: '둥지 주인이 아닙니다.' });
