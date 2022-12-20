@@ -9,11 +9,11 @@ const errorLogger = (err, req, res, next) => {
 const errorConverter = (err, req, res, next) => {
   if (err instanceof ApiError) next(err);
   else if (err.isJoi) next(new ApiError(err.message, 401));
-  else next(new ApiError('알 수 없는 오류입니다.', 500));
+  else next(new ApiError('UNKNOWN ERROR', 500));
 };
 
 const errorHandler = (err, req, res, next) => {
-  res.status(err.statusCode).json({ errorMessage: err.message });
+  res.status(err.statusCode).json({ msg: err.message });
 };
 
 module.exports = { errorConverter, errorLogger, errorHandler };

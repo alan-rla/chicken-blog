@@ -22,7 +22,7 @@ class UsersController {
         confirm,
       });
 
-      res.status(200).json({ message: `${nickname}님이 회원가입 하셨습니다.` });
+      res.status(200).json({ msg: 'REGISTER COMPLETE' });
     } catch (err) {
       next(err);
     }
@@ -33,10 +33,7 @@ class UsersController {
       const { account, password } = await loginSchema.validateAsync(req.body);
       const accessToken = await this.usersService.login({ account, password });
 
-      res
-        .status(200)
-        .cookie('token', accessToken)
-        .json({ message: '로그인에 성공했습니다.', accessToken });
+      res.status(200).cookie('token', accessToken).json({ accessToken });
     } catch (err) {
       next(err);
     }
@@ -44,10 +41,7 @@ class UsersController {
 
   logout = async (req, res, next) => {
     try {
-      res
-        .status(200)
-        .clearCookie('token')
-        .json({ message: '로그아웃에 성공했습니다.' });
+      res.status(200).clearCookie('token').json({ msg: 'LOGOUT' });
     } catch (err) {
       next(err);
     }
