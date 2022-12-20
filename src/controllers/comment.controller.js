@@ -10,7 +10,7 @@ class cmtcontroller {
       const { content } = req.body;
 
       await cmtservice.cmtPostService({ userId, content, postId });
-      res.status(200).json({ messge: '댓글작성 완료' });
+      res.status(200).json({ msg: '댓글작성 완료' });
     } catch (err) {
       next(err);
     }
@@ -24,7 +24,7 @@ class cmtcontroller {
       const { userId } = res.locals;
 
       await cmtservice.cmtPatchService({ userId, postId, commentId, content });
-      res.status(200).json({ messge: '댓글 수정 완료.' });
+      res.status(200).json({ msg: '댓글 수정 완료.' });
     } catch (err) {
       next(err);
     }
@@ -37,7 +37,7 @@ class cmtcontroller {
       
       await cmtservice.smtDelService({ postId, commentId, userId });
 
-      res.status(200).json({ messge: '댓글 삭제 성공' });
+      res.status(200).json({ msg: '댓글 삭제 성공' });
     } catch (err) {
       next(err);
     }

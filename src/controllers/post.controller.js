@@ -10,10 +10,10 @@ class PostController {
       console.log('user', userId);
 
       if (some.userId != userId) {
-        res.status(500).json({ messge: '둥지 주인이 아닙니다.' });
+        res.status(500).json({ msg: '둥지 주인이 아닙니다.' });
       }
       pstservice.creatPostService({ userId, title, content });
-      return res.status(200).json({ messge: '글쓰기 성공' });
+      return res.status(200).json({ msg: '글쓰기 성공' });
     } catch (err) {
       next(err);
     }
@@ -58,7 +58,7 @@ class PostController {
         content,
       });
 
-      res.status(200).json({ messge: '게시글을 수정했습니다.' });
+      res.status(200).json({ msg: '게시글을 수정했습니다.' });
     } catch (err) {
       next(err);
     }
@@ -72,7 +72,7 @@ class PostController {
 
       await pstservice.delPostService({ someId, userId, postId });
 
-      res.status(200).json({ messge: '게시글 삭제 성공' });
+      res.status(200).json({ msg: '게시글 삭제 성공' });
     } catch (err) {
       next(err);
     }

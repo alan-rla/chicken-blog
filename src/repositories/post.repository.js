@@ -19,40 +19,38 @@ class PostsRepository {
   };
 
   getpost = async ({ userId, postId }) => {
-    console.log(3);
     const post = await Posts.findOne({
       where: { postId },
       order: [['createdAt', 'asc']],
       attributes: ['postId', 'title', 'updatedAt'],
+      raw: true,
+    });
+
+    return post;
+  };
+
+  getpostSecond = async ({ postId }) => {
+    const postsComments = Comments.findAll({
+      where: { postId },
+      attributes: [
+        'commentId',
+        [Sequelize.col('User.nickname'), 'nickname'],
+        'content',
+      ],
 
       include: [
         {
-          subQuery: false,
-          model: Comments,
-          as: 'Comments',
-          where: { postId },
-          order: [['createdAt', 'asc']],
+          model: Users,
+          as: 'User',
+          required: true,
 
-          attributes: [
-            'commentId',
-            //[Sequelize.col('User.nickname'), 'nickname'],
-            'content',
-          ],
-
-          include: [
-            {
-              model: Users,
-              as: 'User',
-              required: true,
-
-              attributes: ['nickname'],
-            },
-          ],
+          attributes: [],
         },
       ],
+      raw: true,
     });
-    console.log(post);
-    return post;
+
+    return postsComments;
   };
 
   patchpost = async ({ postId, title, content }) => {

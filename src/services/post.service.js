@@ -26,10 +26,11 @@ class Postservice {
     }
 
     const posts = await pstrepository.getpost({ userId, postId });
+    const comments = await pstrepository.getpostSecond({ postId });
 
-    //TODO: 추후 수정 필요 comment.nickname map함수 활용
-    //const answer = {};
-    return posts;
+    const result = { ...posts, comments };
+    
+    return result;
   };
 
   patchPostService = async ({ someId, userId, postId, title, content }) => {
