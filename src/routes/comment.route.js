@@ -5,7 +5,15 @@ const commentController = new CommentController();
 const router = Router();
 
 router.post('/:postId', authMW.isLoggedIn, commentController.cmtPost);
-router.patch('/:postId/:commentId', authMW.isLoggedIn);
-router.delete('/:podtId/:commentId', authMW.isLoggedIn);
+router.patch(
+  '/:postId/:commentId',
+  authMW.isLoggedIn,
+  commentController.cmtpatch,
+);
+router.delete(
+  '/:postId/:commentId',
+  authMW.isLoggedIn,
+  commentController.cmtdel,
+);
 
 module.exports = router;

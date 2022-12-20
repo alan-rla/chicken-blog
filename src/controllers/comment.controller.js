@@ -18,12 +18,30 @@ class cmtcontroller {
 
   cmtpatch = async (req, res, next) => {
     try {
+      const { postId, commentId } = req.params;
+
+      const { content } = req.body;
+      const { userId } = res.locals;
+
+      await cmtservice.cmtPatchService({ userId, postId, commentId, content });
+      res.status(200).json({ messge: '댓글 수정 완료.' });
     } catch (err) {
       next(err);
     }
   };
 
-  cmtdel = async (req, res) => {};
+  cmtdel = async (req, res, next) => {
+    try {
+      const { postId, commentId } = req.params;
+      const { userId } = res.locals;
+      
+      await cmtservice.smtDelService({ postId, commentId, userId });
+
+      res.status(200).json({ messge: '댓글 삭제 성공' });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = cmtcontroller;
