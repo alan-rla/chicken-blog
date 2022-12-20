@@ -1,6 +1,10 @@
 const UsersService = require('../services/user.service');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {
+  registerSchema,
+  loginSchema,
+} = require('../validations/user.validation');
 
 class UsersController {
   constructor() {
@@ -9,7 +13,8 @@ class UsersController {
 
   register = async (req, res, next) => {
     try {
-      const { account, nickname, password, confirm } = req.body;
+      const { account, nickname, password, confirm } =
+        await registerSchema.validateAsync(req.body);
       await this.usersService.register({
         account,
         nickname,
@@ -17,7 +22,7 @@ class UsersController {
         confirm,
       });
 
-      res.status(200).json({ message: `${nickname}님이 회원가입 하셨습니다.` });
+      res.status(200).json({ msg: 'REGISTER COMPLETE' });
     } catch (err) {
       next(err);
     }
@@ -25,13 +30,10 @@ class UsersController {
 
   login = async (req, res, next) => {
     try {
-      const { account, password } = req.body;
+      const { account, password } = await loginSchema.validateAsync(req.body);
       const accessToken = await this.usersService.login({ account, password });
 
-      res
-        .status(200)
-        .cookie('token', accessToken)
-        .json({ message: '로그인에 성공했습니다.', accessToken });
+      res.status(200).cookie('token', accessToken).json({ accessToken });
     } catch (err) {
       next(err);
     }
@@ -39,10 +41,7 @@ class UsersController {
 
   logout = async (req, res, next) => {
     try {
-      res
-        .status(200)
-        .clearCookie('token')
-        .json({ message: '로그아웃에 성공했습니다.' });
+      res.status(200).clearCookie('token').json({ msg: 'LOGOUT' });
     } catch (err) {
       next(err);
     }
