@@ -13,13 +13,13 @@ class UsersService {
 
   register = async ({ account, nickname, password, confirm }) => {
     if (password !== confirm)
-      throw new ApiError('비밀번호 확인이 일치하지 않습니다.', 401);
+      throw new ApiError('PW CONFIRM DOES NOT MATCH', 401);
 
     const existAcc = await this.usersRepository.findUserByAcc({ account });
-    if (existAcc) throw new ApiError('이미 존재하는 아이디입니다.', 401);
+    if (existAcc) throw new ApiError('ID ALREADY EXISTS', 401);
 
     const existNick = await this.usersRepository.findUserByNick({ nickname });
-    if (existNick) throw new ApiError('이미 존재하는 닉네임입니다.', 401);
+    if (existNick) throw new ApiError('NICKNAME ALREADY EXISTS', 401);
 
     const hashedPW = await this.bcrypt.hash(password, parseInt(PASSWORD_SALT));
 
@@ -30,8 +30,7 @@ class UsersService {
     const user = await this.usersRepository.findUserByAcc({ account });
     const pwCompare = await this.bcrypt.compare(password, user.password);
 
-    if (!user || !pwCompare)
-      throw new ApiError('아이디 또는 비밀번호가 틀렸습니다.', 401);
+    if (!user || !pwCompare) throw new ApiError('WRONG ID/PW', 401);
 
     return this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
       expiresIn: 60 * 60,
@@ -40,7 +39,7 @@ class UsersService {
 
   findUser = async ({ userId }) => {
     const userInfo = await this.usersRepository.findUserByUserId({ userId });
-    if (!userInfo) throw new ApiError('존재하지 않는 계정입니다', 401);
+    if (!userInfo) throw new ApiError('CANNOT FIND USER', 401);
 
     if (userInfo.dataValues.userLevel === null) {
       userInfo.dataValues.userLevel = 1;

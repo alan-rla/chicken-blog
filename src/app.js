@@ -6,6 +6,7 @@ const { urlencoded } = require('express');
 const morgan = require('morgan');
 const api = require('./routes');
 const logger = require('./config/logger');
+const boolParser = require('express-query-boolean');
 const db = require('./models');
 const {
   errorConverter,
@@ -26,6 +27,7 @@ app.use(
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(boolParser());
 
 app.use('/api', api);
 
