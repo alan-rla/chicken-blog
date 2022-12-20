@@ -1,5 +1,6 @@
 const { Posts, Comments, Users } = require('../models/index.js');
 const { Sequelize } = require('sequelize');
+const { ApiError } = require('../utils/apiError');
 
 class PostsRepository {
   creatpost = async ({ userId, title, content }) => {
@@ -63,7 +64,7 @@ class PostsRepository {
   dlepost = async ({ postId }) => {
     await Posts.destroy({ where: { postId } });
 
-    res.statsu(200).json({ messge: '게시글을 삭제했습니다.' });
+    return true;
   };
 }
 

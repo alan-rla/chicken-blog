@@ -10,5 +10,6 @@ router.post('/:userId', authMW.isLoggedIn, pstcontroller.creatPostController);
 router.patch('/:userId/:postId', authMW.isLoggedIn, pstcontroller.patchOnePostController);
 router.get('/:userId',   pstcontroller.getAllPostController);
 router.get('/:userId/:postId', pstcontroller.getONEPostController);
+router.delete('/:userId/:postId', authMW.isLoggedIn, pstcontroller.delOnePostController )
 
 module.exports = router;

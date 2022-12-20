@@ -66,27 +66,20 @@ class PostController {
     }
   };
 
-  delONnePostController = async (req,res)=>{
-    try{
-      
+  delOnePostController = async (req, res) => {
+    try {
+      const someId = req.params.userId;
+      const postId = req.params.postId;
+      const { userId } = res.locals;
 
+      await pstservice.delPostService({ someId, userId, postId });
 
-
-
-
-
-    }catch (err){
+      res.status(200).json({ messge: '게시글 삭제 성공' });
+    } catch (err) {
       console.log(err);
       res.status(400).json({ messge: '게시글 삭제 오류' });
     }
-
-
-
-
-
-  }
-
-
+  };
 }
 
 module.exports = PostController;

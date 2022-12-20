@@ -3,7 +3,6 @@ const pstrepository = new PostsRepository();
 const { ApiError } = require('../utils/apiError');
 class Postservice {
   creatPostService = async ({ userId, title, content }) => {
-    
     if (!userId || !title || !content) {
       throw new ApiError('게시글/제목/내용 확인필요', 401);
     }
@@ -43,7 +42,18 @@ class Postservice {
     return true;
   };
 
-  delPostService = async () => {};
+  delPostService = async ({ someId, userId, postId }) => {
+    if (!someId || !userId || !postId) {
+      throw new ApiError('입력값 오류', 401);
+    }
+
+    if (someId != userId) {
+      throw new ApiError('페이지 주인이 아님', 403);
+    }
+
+    await pstrepository.dlepost({ userId, postId });
+    return true;
+  };
 }
 
 module.exports = Postservice;
