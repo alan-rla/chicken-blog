@@ -1,48 +1,46 @@
 const PostsRepository = require('../repositories/post.repository');
 const pstrepository = new PostsRepository();
+const { ApiError } = require('../utils/apiError');
 class Postservice {
   creatPostService = async ({ userId, title, content }) => {
-
+    
     if (!userId || !title || !content) {
-      res.status(401).json({ messge: '게시글/제목/내용을 입력하십시오' });
+      throw new ApiError('게시글/제목/내용 확인필요', 401);
     }
 
     await pstrepository.creatpost({ userId, title, content });
     return true;
   };
 
-  
-
-  getAllPostService = async ({userId}) => {
-   
-    if(!userId){
-      res.status(401).json({ messge: 'userId params가 없습니다.' });
+  getAllPostService = async ({ userId }) => {
+    if (!userId) {
+      throw new ApiError('params 값 확인필요', 401);
     }
-    const posts = await pstrepository.getAllposts({userId})
-    
+    const posts = await pstrepository.getAllposts({ userId });
+
     return posts;
   };
 
-  getPostService = async ({userId, postId}) => {
-    
-    if(!userId || !postId){
-      res.status(500).json({messge: "params의 값이 정상적이지 않습니다."})
+  getPostService = async ({ userId, postId }) => {
+    if (!userId || !postId) {
+      throw new ApiError('params 값 확인필요', 401);
     }
 
-    const posts = await pstrepository.getpost({userId, postId})
+    const posts = await pstrepository.getpost({ userId, postId });
     return posts;
   };
 
-  patchPostService = async ({userId, postId}) => {
-
-    if(!userId || !postId || !title || !content){
-      res.status(500).json({errorMessge: "게시글 제목/내용을 입력하십시오."})
+  patchPostService = async ({ someId, userId, postId, title, content }) => {
+    if (!userId || !postId || !title || !content) {
+      throw new ApiError('제목/내용 입력 필요', 401);
     }
 
-    await pstrepository.patchpost({someId:userId, postId, title, content})
+    if (someId != userId) {
+      throw new ApiError('둥지주인이 아님.', 403);
+    }
 
-
-
+    await pstrepository.patchpost({ postId, title, content });
+    return true;
   };
 
   delPostService = async () => {};

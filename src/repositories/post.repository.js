@@ -54,15 +54,10 @@ class PostsRepository {
     return post;
   };
 
-  patchpost = async ({ someId, postId, title, content }) => {
-    console.log('someId', someId);
-    console.log('postId', postId);
-    console.log('title', title);
-    console.log('content', content);
+  patchpost = async ({ postId, title, content }) => {
+    await Posts.update({ title, content }, { where: { postId: postId } });
 
-    //await Posts.update({ title, content }, { where: { postId: postId } });
-
-    return res.status(200).json({ messge: '게시글을 수정했습니다.' });
+    return true;
   };
 
   dlepost = async ({ postId }) => {
