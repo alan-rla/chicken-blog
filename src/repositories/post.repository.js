@@ -22,7 +22,7 @@ class PostsRepository {
     const post = await Posts.findOne({
       where: { postId },
       order: [['createdAt', 'asc']],
-      attributes: ['postId', 'title', 'updatedAt'],
+      attributes: ['postId', 'title', 'content', 'updatedAt'],
       raw: true,
     });
 

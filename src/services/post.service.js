@@ -29,7 +29,7 @@ class Postservice {
     const comments = await pstrepository.getpostSecond({ postId });
 
     const result = { ...posts, comments };
-    
+
     return result;
   };
 
