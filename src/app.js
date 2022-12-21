@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config('../');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const { urlencoded } = require('express');
@@ -8,6 +8,7 @@ const api = require('./routes');
 const logger = require('./config/logger');
 const boolParser = require('express-query-boolean');
 const db = require('./models');
+const cors = require('cors');
 const {
   errorConverter,
   errorLogger,
@@ -21,6 +22,14 @@ const app = express();
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', {
     stream: logger.stream,
+  }),
+);
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    origin: true,
+    optionsSuccessStatus: 200,
   }),
 );
 
