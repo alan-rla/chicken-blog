@@ -40,7 +40,7 @@ class TodoService {
       throw new ApiError('날짜 지난 TODO 내용 수정 불가.', 403);
     }
 
-    await this.todoRepository.updateTodos({ userId, todoId, content });
+    await this.todoRepository.updateTodos({ todoId, content });
   };
 
   updateDone = async ({ userId, todoId, done }) => {
