@@ -33,7 +33,7 @@ class UsersController {
       const { account, password } = await loginSchema.validateAsync(req.body);
       const accessToken = await this.usersService.login({ account, password });
 
-      res.status(200).cookie('token', accessToken).json({ accessToken });
+      res.status(200).json(accessToken);
     } catch (err) {
       next(err);
     }

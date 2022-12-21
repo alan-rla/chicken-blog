@@ -32,9 +32,11 @@ class UsersService {
 
     if (!user || !pwCompare) throw new ApiError('WRONG ID/PW', 401);
 
-    return this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
+    const accessToken = this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
       expiresIn: '24h',
     });
+    const userId = user.userId;
+    return { accessToken, userId };
   };
 
   findUser = async ({ userId }) => {
