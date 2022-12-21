@@ -23,7 +23,7 @@ class TodoRepository {
         {
           model: this.userModels,
           as: 'User',
-          attributes: ['userId', 'nickname'],
+          attributes: [],
         },
       ],
     });
