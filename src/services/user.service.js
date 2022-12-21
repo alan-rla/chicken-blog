@@ -33,7 +33,7 @@ class UsersService {
     if (!user || !pwCompare) throw new ApiError('WRONG ID/PW', 401);
 
     return this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
-      expiresIn: 60 * 60,
+      expiresIn: '24h',
     });
   };
 
