@@ -11,6 +11,19 @@ class UsersService {
   }
   usersRepository = new UsersRepository(Users, Todos);
 
+  levelConverter = function (users) {
+    users.map((user) => {
+      if (user.dataValues.userLevel === null) {
+        user.dataValues.userLevel = 1;
+      }
+
+      return (user.dataValues.userLevel = Math.min(
+        Math.max(parseInt(user.dataValues.userLevel / 5), 1),
+        5,
+      ));
+    });
+  };
+
   register = async ({ account, nickname, password, confirm }) => {
     if (password !== confirm)
       throw new ApiError('PW CONFIRM DOES NOT MATCH', 401);
@@ -32,24 +45,19 @@ class UsersService {
 
     if (!user || !pwCompare) throw new ApiError('WRONG ID/PW', 401);
 
-    return this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
-      expiresIn: 60 * 60,
+    const accessToken = this.jwt.sign({ userId: user.userId }, JWT_SECRET, {
+      expiresIn: '24h',
     });
+    const userId = user.userId;
+    return { accessToken, userId };
   };
 
   findUser = async ({ userId }) => {
     const userInfo = await this.usersRepository.findUserByUserId({ userId });
     if (!userInfo) throw new ApiError('CANNOT FIND USER', 401);
 
-    if (userInfo.dataValues.userLevel === null) {
-      userInfo.dataValues.userLevel = 1;
-    }
-    // 유저 레벨은 최소 1 최대 5
-    userInfo.dataValues.userLevel = Math.min(
-      Math.max(parseInt(userInfo.dataValues.userLevel / 1), 1),
-      5,
-    );
-    return userInfo;
+    this.levelConverter(userInfo);
+    return userInfo[0];
   };
 
   randomUsers = async ({ userId }) => {
@@ -58,17 +66,15 @@ class UsersService {
     const users = await this.usersRepository.findRandomUsers({ userId });
 
     // 유저 레벨 변환
-    users.map((user) => {
-      if (user.dataValues.userLevel === null) {
-        user.dataValues.userLevel = 1;
-      }
-
-      return (user.dataValues.userLevel = Math.min(
-        Math.max(parseInt(user.dataValues.userLevel / 1), 1),
-        5,
-      ));
-    });
+    this.levelConverter(users);
     return users;
+  };
+
+  firstRandomUser = async ({}) => {
+    const user = await this.usersRepository.firstRandomUser({});
+
+    this.levelConverter(user);
+    return user[0];
   };
 }
 

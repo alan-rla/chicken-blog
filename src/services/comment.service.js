@@ -29,10 +29,6 @@ class cmtService {
   };
 
   smtDelService = async ({ postId, commentId, userId }) => {
-    console.log(postId);
-    console.log(commentId);
-    console.log(userId);
-
     if (!postId || !commentId || !userId) {
       throw new ApiError('댓글삭제부분 invalid 오류');
     }

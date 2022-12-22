@@ -33,7 +33,7 @@ class UsersController {
       const { account, password } = await loginSchema.validateAsync(req.body);
       const accessToken = await this.usersService.login({ account, password });
 
-      res.status(200).cookie('token', accessToken).json({ accessToken });
+      res.status(200).json(accessToken);
     } catch (err) {
       next(err);
     }
@@ -50,6 +50,8 @@ class UsersController {
   findUser = async (req, res, next) => {
     const { userId } = req.params;
     if (userId === 'neighbor') {
+      next();
+    } else if (userId === 'random') {
       next();
     } else {
       try {
@@ -68,6 +70,16 @@ class UsersController {
       const randomUsers = await this.usersService.randomUsers({ userId });
 
       res.status(200).json({ randomUsers });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  firstRandomUser = async (req, res, next) => {
+    try {
+      const randomUser = await this.usersService.firstRandomUser({});
+
+      res.status(200).json({ randomUser });
     } catch (err) {
       next(err);
     }

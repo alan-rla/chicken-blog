@@ -3,17 +3,15 @@ const pstservice = new Postservice();
 class PostController {
   creatPostController = async (req, res, next) => {
     try {
-      const { title, content } = req.body;
+      let { title, content } = req.body;
       const { userId } = res.locals;
       const some = req.params;
-      console.log('some', some.userId);
-      console.log('user', userId);
 
       if (some.userId != userId) {
-        res.status(500).json({ msg: '둥지 주인이 아닙니다.' });
+        return res.status(500).json({ msg: '둥지 주인이 아닙니다.' });
       }
-      pstservice.creatPostService({ userId, title, content });
-      return res.status(200).json({ msg: '글쓰기 성공' });
+      await pstservice.creatPostService({ userId, title, content });
+      res.status(200).json({ msg: '글쓰기 성공' });
     } catch (err) {
       next(err);
     }

@@ -26,10 +26,11 @@ class Postservice {
     }
 
     const posts = await pstrepository.getpost({ userId, postId });
-    const comments = await pstrepository.getpostSecond({ postId });
+    // const comments = await pstrepository.getpostSecond({ postId });
 
-    const result = { ...posts, comments };
-    
+    // const result = { ...posts, comments };
+    const result = posts;
+
     return result;
   };
 

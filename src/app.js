@@ -8,6 +8,7 @@ const api = require('./routes');
 const logger = require('./config/logger');
 const boolParser = require('express-query-boolean');
 const db = require('./models');
+const cors = require('cors');
 const {
   errorConverter,
   errorLogger,
@@ -24,19 +25,30 @@ app.use(
   }),
 );
 
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'https://web-chicken-project-20z52flbynr1f6.gksl2.cloudtype.app/',
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  }),
+);
+
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(boolParser());
 
-app.use('/api', api);
+app.use('/', api);
 
 app.use(errorLogger);
 app.use(errorConverter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  logger.info(`${PORT} 포트로 서버가 열렸습니다.`);
+  console.log(`${PORT} 포트로 서버가 열렸습니다.`);
 });
 
 module.exports = app;
