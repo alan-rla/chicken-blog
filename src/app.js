@@ -27,7 +27,10 @@ app.use(
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: [
+      'http://localhost:3000',
+      'https://web-chicken-project-20z52flbynr1f6.gksl2.cloudtype.app/',
+    ],
     credentials: true,
     optionsSuccessStatus: 200,
   }),
