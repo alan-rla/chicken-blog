@@ -49,7 +49,8 @@ class UsersService {
       expiresIn: '24h',
     });
     const userId = user.userId;
-    return { accessToken, userId };
+    const nickname = user.nickname;
+    return { accessToken, userId, nickname };
   };
 
   findUser = async ({ userId }) => {
