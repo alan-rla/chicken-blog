@@ -35,7 +35,7 @@ class UsersRepository {
       ],
     });
 
-    return userInfo;
+    return [userInfo];
   };
 
   findRandomUsers = async ({ userId }) => {
@@ -60,6 +60,29 @@ class UsersRepository {
     });
 
     return randomUsers;
+  };
+
+  firstRandomUser = async ({}) => {
+    const randomUser = await this.usersModel.findAll({
+      order: Sequelize.literal('rand()'),
+      subQuery: false,
+      limit: 1,
+      attributes: [
+        'userId',
+        'nickname',
+        [Sequelize.fn('SUM', Sequelize.col('Todos.done')), 'userLevel'],
+      ],
+      include: [
+        {
+          model: this.todosModel,
+          as: 'Todos',
+          attributes: [],
+        },
+      ],
+      group: ['userId'],
+    });
+
+    return randomUser;
   };
 }
 

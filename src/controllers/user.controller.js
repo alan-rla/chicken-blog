@@ -51,6 +51,8 @@ class UsersController {
     const { userId } = req.params;
     if (userId === 'neighbor') {
       next();
+    } else if (userId === 'random') {
+      next();
     } else {
       try {
         const userInfo = await this.usersService.findUser({ userId });
@@ -68,6 +70,16 @@ class UsersController {
       const randomUsers = await this.usersService.randomUsers({ userId });
 
       res.status(200).json({ randomUsers });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  firstRandomUser = async (req, res, next) => {
+    try {
+      const randomUser = await this.usersService.firstRandomUser({});
+
+      res.status(200).json({ randomUser });
     } catch (err) {
       next(err);
     }
