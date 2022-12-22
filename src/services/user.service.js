@@ -18,7 +18,7 @@ class UsersService {
       }
 
       return (user.dataValues.userLevel = Math.min(
-        Math.max(parseInt(user.dataValues.userLevel / 1), 1),
+        Math.max(parseInt(user.dataValues.userLevel / 5), 1),
         5,
       ));
     });
