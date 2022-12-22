@@ -25,13 +25,13 @@ app.use(
   }),
 );
 
-// app.use(
-//   cors({
-//     origin: 'https://web-chicken-project5166124-20z52flbynr1f6.gksl2.cloudtype.app/',
-//     credentials: true,
-//     optionsSuccessStatus: 200,
-//   }),
-// );
+app.use(
+  cors({
+    origin: '*',
+    credentials: true,
+    optionsSuccessStatus: 200,
+  }),
+);
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
